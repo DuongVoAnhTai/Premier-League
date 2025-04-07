@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('match_models', function (Blueprint $table) {
-            $table->id();
+        Schema::create('schedules', function (Blueprint $table) {
+            $table->string('scheduleID')->primary();
+            $table->date('creationDate');
+            $table->string('tournamentID');
+            $table->foreign('tournamentID')->references('tournamentID')->on('tournaments')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('match_models');
+        Schema::dropIfExists('schedules');
     }
 };

@@ -1,17 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Coach;
 
+use App\Models\MatchModel;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class TeamController extends Controller
+class MatchController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->middleware('coach');
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($scheduleID)
     {
-        //
+        $matches = MatchModel::where('scheduleID', $scheduleID)->with(['team1', 'team2', 'result'])->get();
+        return response()->json($matches);
     }
 
     /**

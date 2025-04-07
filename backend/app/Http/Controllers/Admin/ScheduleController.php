@@ -1,34 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class TournamentController extends Controller
+class ScheduleController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth:api');
+        $this->middleware('admin');
+    }
+    
+    public function approveSchedule($scheduleID)
+    {
+        $schedule = Schedule::findOrFail($scheduleID);
+        $schedule->matches()->update(['status' => 'approved']);
+        return response()->json($schedule->load('matches'));
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Tournament list',
-            'data' => [
-                [
-                    'id' => 1,
-                    'name' => 'Tournament 1',
-                    'date' => '2023-10-01',
-                    'location' => 'Location 1',
-                ],
-                [
-                    'id' => 2,
-                    'name' => 'Tournament 2',
-                    'date' => '2023-11-01',
-                    'location' => 'Location 2',
-                ],
-            ],
-        ]);
+        
     }
 
     /**

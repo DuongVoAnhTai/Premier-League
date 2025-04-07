@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rankings', function (Blueprint $table) {
-            $table->id();
+        Schema::create('tournaments', function (Blueprint $table) {
+            $table->string('tournamentID')->primary();
+            $table->string('name');
+            $table->date('startDate');
+            $table->date('endDate');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rankings');
+        Schema::dropIfExists('tournaments');
     }
 };

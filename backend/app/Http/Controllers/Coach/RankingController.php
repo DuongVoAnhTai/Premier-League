@@ -1,17 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Coach;
 
+use App\Models\Ranking;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class MatchController extends Controller
+class RankingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->middleware('coach');
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($tournamentID)
     {
-        //
+        $rankings = Ranking::where('tournamentID', $tournamentID)->with('team')->get();
+        return response()->json($rankings);
     }
 
     /**
