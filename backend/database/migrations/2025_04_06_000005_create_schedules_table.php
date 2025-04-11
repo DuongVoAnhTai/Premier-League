@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->string('scheduleID')->primary();
             $table->date('creationDate');
+            $table->string('location');
             $table->string('tournamentID');
             $table->foreign('tournamentID')->references('tournamentID')->on('tournaments')->onDelete('cascade');
             $table->timestamps();

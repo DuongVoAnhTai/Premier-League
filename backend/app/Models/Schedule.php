@@ -10,7 +10,7 @@ class Schedule extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['scheduleID', 'creationDate', 'tournamentID'];
+    protected $fillable = ['scheduleID', 'creationDate', 'location', 'tournamentID'];
 
     public function tournament()
     {

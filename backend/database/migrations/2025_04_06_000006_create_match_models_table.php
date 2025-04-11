@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('team1ID');
             $table->string('team2ID');
             $table->date('matchDate');
+            $table->string('status');
             $table->string('scheduleID');
             $table->foreign('team1ID')->references('teamID')->on('teams')->onDelete('cascade');
             $table->foreign('team2ID')->references('teamID')->on('teams')->onDelete('cascade');
