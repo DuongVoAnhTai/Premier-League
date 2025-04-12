@@ -6,22 +6,24 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Uuid;
 
 class AuthController extends Controller
 {
     public function register(Request $request) {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:users,username',
+            'displayName' => 'required|string|max:255',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:admin,coach',
+            'roleID' => 'required|exists:roles,roleID',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'accountID' => Uuid::uuid4()->toString(),
+            'username' => $request->username,
+            'displayName' => $request->displayName,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'roleID' => $request->roleID,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;

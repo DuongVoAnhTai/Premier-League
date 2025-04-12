@@ -22,7 +22,6 @@ class StoreTournamentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tournamentID' => 'required|string|unique:tournaments',
             'name' => 'required|string',
             'startDate' => 'required|date',
             'endDate' => 'nullable|date|after:startDate',
