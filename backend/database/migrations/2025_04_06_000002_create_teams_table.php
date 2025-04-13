@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('coach');
             $table->string('points')->default(0);
             $table->string('logo')->nullable();
-            $table->string('tournamentID');
-            $table->foreign('tournamentID')->references('tournamentID')->on('tournaments')->onDelete('cascade');
             $table->timestamps();
         });
     }

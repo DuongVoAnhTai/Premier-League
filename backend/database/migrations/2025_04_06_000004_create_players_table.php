@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->string('playerID')->primary();
             $table->string('name');
+            $table->date('dateOfBirth')->nullable();
             $table->string('teamID');
             $table->string('positionID');
             $table->foreign('teamID')->references('teamID')->on('teams')->onDelete('cascade');

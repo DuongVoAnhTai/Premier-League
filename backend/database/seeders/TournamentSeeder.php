@@ -14,10 +14,11 @@ class TournamentSeeder extends Seeder
     public function run(): void
     {
         Tournament::create([
-            'tournamentID' => Str::uuid(),
+            'tournamentID' => 'tournament1',
             'name' => 'National Championship 2025',
             'startDate' => '2025-05-01',
             'endDate' => '2025-06-01',
+            'status' => 'ongoing'
         ]);
     }
 }

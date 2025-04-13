@@ -10,12 +10,7 @@ class Team extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['teamID', 'name', 'coach', 'points', 'logo', 'tournamentID'];
-
-    public function tournament()
-    {
-        return $this->belongsTo(Tournament::class, 'tournamentID', 'tournamentID');
-    }
+    protected $fillable = ['teamID', 'name', 'coach', 'points', 'logo'];
 
     public function players() {
         return $this->hasMany(Player::class, 'teamID', 'teamID');

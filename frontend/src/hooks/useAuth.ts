@@ -1,51 +1,53 @@
-import { login, logout, register } from "@/lib/api";
-import { User } from "@/lib/types";
-import { getToken, getUser, removeToken, removeUser, setToken, setUser } from "@/utils/localStorage";
-import { useEffect, useState } from "react"
+"use client";
 
-export const useAuth = () => {
-    const [user, setUserState] = useState<User | null>(null);
-    const [token, setTokenState] = useState<string | null>(null);
+import { useState, useEffect } from "react";
+export interface AuthState {
+  isAuthenticated: boolean;
+  token: string | null;
+  login: (username: string, password: string) => Promise<void>;
+  logout: () => void;
+}
 
-    useEffect(() => {
-        const storedUser = getUser();
-        const storedToken = getToken();
+const useAuth = (): AuthState => {
+  const [token, setToken] = useState<string | null>(null);
 
-        if(storedUser && storedToken) {
-            setUserState(storedUser);
-            setTokenState(storedToken);
-        }
-    }, []); 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
-    const handleLogin = async (email: string, password: string) => {
-        const { user, token } = await login(email, password);
-        setUser(user);
-        setToken(token);
-        setUserState(user);
-        setTokenState(token);
-    };
+  const login = async (username: string, password: string) => {
+    try {
+      const response = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
+      } else {
+        throw new Error("Login failed");
+      }
+    } catch (error) {
+      throw new Error("Error during login");
+    }
+  };
 
-    const handleRegister = async (name: string, email: string, password: string, role: string) => {
-        const { user, token } = await register(name, email, password, role);
-        setUser(user);
-        setToken(token);
-        setUserState(user);
-        setTokenState(token);
-    };
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
 
-    const handleLogout = async () => {
-        await logout();
-        removeUser();
-        removeToken();
-        setUserState(null);
-        setTokenState(null);
-    };
-
-    return {
-        user,
-        token,
-        login: handleLogin,
-        register: handleRegister,
-        logout: handleLogout,
-    };
+  return {
+    isAuthenticated: !!token,
+    token,
+    login,
+    logout,
+  };
 };
+
+export default useAuth;

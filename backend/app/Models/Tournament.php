@@ -14,7 +14,8 @@ class Tournament extends Model
         'tournamentID', 
         'name', 
         'startDate', 
-        'endDate'
+        'endDate',
+        'status'
     ];
 
     public function teams()

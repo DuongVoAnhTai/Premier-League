@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->date('startDate');
             $table->date('endDate')->nullable();
+            $table->string('status')->default("Not started");
             $table->timestamps();
         });
     }

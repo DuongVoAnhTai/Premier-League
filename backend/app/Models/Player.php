@@ -10,7 +10,7 @@ class Player extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['playerID', 'name', 'teamID', 'positionID'];
+    protected $fillable = ['playerID', 'name', 'dateOfBirth', 'teamID', 'positionID'];
 
     public function team() {
         return $this->belongsTo(Team::class, 'teamID', 'teamID');

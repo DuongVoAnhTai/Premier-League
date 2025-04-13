@@ -1,46 +1,78 @@
-'use client'
+// "use client";
 
-import { useAuth } from "@/hooks/useAuth";
-import Link from "next/link";
+import Image from "next/image"
 
-export const Navbar = () => {
-    const { user, logout } = useAuth(); //
+// import { useAuthContext } from "@/context/AuthContext";
+// import Link from "next/link";
+// import { useRouter } from "next/navigation";
 
-    return (
-        <nav className="bg-blue-600 text-white p-4">
-            <div className="container mx-auto flex justify-between items-center">
-                <Link href="/" className="text-x1 font-bold">
-                    Football Championship
-                </Link>
-                <div className="space-x-4">
-                    {user ? (
-                        <>
-                            {user.role === 'admin' && (
-                                <Link href="/admin/tournaments" className="hover:underline">
-                                    Admin Dashboard
-                                </Link>
-                            )}
-                            {user.role === 'coach' && (
-                                <Link href="/coach/tournaments" className="hover:underline">
-                                    Coach Dashboard
-                                </Link>
-                            )}
-                            <button onClick={logout} className="hover:underline">
-                                Logout
-                            </button>
-                        </>
-                    ): (
-                        <>
-                            <Link href="/login" className="hover:underline">
-                                Login
-                            </Link>
-                            <Link href="/register" className="hover:underline">
-                                Register
-                            </Link>
-                        </>
-                    )}
-                </div>
-            </div>
-        </nav>
-    );
-};
+// const Navbar: React.FC = () => {
+//   const { isAuthenticated, logout } = useAuthContext();
+//   const router = useRouter();
+
+//   const handleLogout = () => {
+//     logout();
+//     router.push("/");
+//   };
+
+//   return (
+//     <nav className="bg-blue-600 p-4 text-white">
+//       <div className="container mx-auto flex justify-between items-center">
+//         <Link href="/" className="text-2xl font-bold">
+//           Football Championship
+//         </Link>
+//         <div className="space-x-4">
+//           <Link href="/tournaments" className="hover:underline">
+//             Tournaments
+//           </Link>
+//           <Link href="/teams" className="hover:underline">
+//             Teams
+//           </Link>
+//           <Link href="/players" className="hover:underline">
+//             Players
+//           </Link>
+//           <Link href="/schedules" className="hover:underline">
+//             Schedules
+//           </Link>
+//           <Link href="/matches" className="hover:underline">
+//             Matches
+//           </Link>
+//           <Link href="/rankings" className="hover:underline">
+//             Rankings
+//           </Link>
+//           {isAuthenticated && (
+//             <>
+//               <Link href="/admin" className="hover:underline">
+//                 Admin Dashboard
+//               </Link>
+//               <button onClick={handleLogout} className="hover:underline">
+//                 Logout
+//               </button>
+//             </>
+//           )}
+//         </div>
+//       </div>
+//     </nav>
+//   );
+// };
+
+// export default Navbar;
+
+
+export default function Navbar () {
+  return (
+    <div className="flex items-center justify-between p-4">
+      {/* SEARCH BAR */}
+      <div className="hidden md:flex">
+        <label htmlFor="">Admin</label>
+      </div>
+      {/* ICONS AND USERS */}
+      <div className="flex items-center gap-6 justify-end w-full">
+        <div className="flex cursor-pointer">
+          <span className="text-xs leading-3 font-medium">Admin</span>
+        </div>
+        <Image src="/avatar.png" alt="" width={20} height={20}/>
+      </div>
+    </div>
+  )
+}
