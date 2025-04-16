@@ -13,32 +13,25 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::create([
-        //     'name' => 'Admin User',
-        //     'email' => 'admin@example.com',
-        //     'password' => Hash::make('password'),
-        //     'role' => 'admin',
-        // ]);
+        $users = [
+            [
+                'userID' => fake()->uuid(),
+                'email' => 'admin@example.com',
+                'password' => Hash::make('password'),
+                'name' => 'Admin User',
+                'role' => 'ADMIN',
+            ],
+            [
+                'userID' => fake()->uuid(),
+                'email' => 'referee@example.com',
+                'password' => Hash::make('password'),
+                'name' => 'Referee User',
+                'role' => 'REFEREE',
+            ],
+        ];
 
-        // User::create([
-        //     'name' => 'Coach User',
-        //     'email' => 'coach@example.com',
-        //     'password' => Hash::make('password'),
-        //     'role' => 'coach',
-        // ]);
-
-        User::create([
-            'username' => 'admin',
-            'displayname' => 'Admin User',
-            'password' => Hash::make('password'),
-            'roleID' => 'role1',
-        ]);
-
-        User::create([
-            'username' => 'user',
-            'displayname' => 'Regular User',
-            'password' => Hash::make('password'),
-            'roleID' => 'role2',
-        ]);
+        foreach ($users as $user) {
+            User::create($user);
+        }
     }
 }

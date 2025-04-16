@@ -16,47 +16,48 @@ class PlayerSeeder extends Seeder
     public function run(): void
     {
         $teams = Team::all();
-        $positions = Position::all();
+        $positions = ['GOALKEEPER', 'DEFENDER', 'MIDFIELDER', 'FORWARD'];
 
         $playersData = [
-            ['name' => 'Bukayo Saka', 'dateOfBirth' => '2001-09-05', 'positionID' => $positions->where('name', 'Forward')->first()->positionID],
-            ['name' => 'Gabriel Martinelli', 'dateOfBirth' => '2001-06-18', 'positionID' => $positions->where('name', 'Forward')->first()->positionID],
-            ['name' => 'Aaron Ramsdale', 'dateOfBirth' => '1998-05-14', 'positionID' => $positions->where('name', 'Goalkeeper')->first()->positionID],
-            ['name' => 'William Saliba', 'dateOfBirth' => '2001-03-24', 'positionID' => $positions->where('name', 'Defender')->first()->positionID],
-            ['name' => 'Declan Rice', 'dateOfBirth' => '1999-01-14', 'positionID' => $positions->where('name', 'Midfielder')->first()->positionID],
+            ['name' => 'Bukayo Saka', 'birthDate' => '2001-09-05', 'position' => 'FORWARD', 'nationality' => 'England', 'image' => 'saka.jpg'],
+            ['name' => 'Gabriel Martinelli', 'birthDate' => '2001-06-18', 'position' => 'FORWARD', 'nationality' => 'Brazil', 'image' => 'martinelli.jpg'],
+            ['name' => 'Aaron Ramsdale', 'birthDate' => '1998-05-14', 'position' => 'GOALKEEPER', 'nationality' => 'England', 'image' => 'ramsdale.jpg'],
+            ['name' => 'William Saliba', 'birthDate' => '2001-03-24', 'position' => 'DEFENDER', 'nationality' => 'France', 'image' => 'saliba.jpg'],
+            ['name' => 'Declan Rice', 'birthDate' => '1999-01-14', 'position' => 'MIDFIELDER', 'nationality' => 'England', 'image' => 'rice.jpg'],
             // Manchester United
-            ['name' => 'Bruno Fernandes', 'dateOfBirth' => '1994-09-08', 'positionID' => $positions->where('name', 'Midfielder')->first()->positionID],
-            ['name' => 'Marcus Rashford', 'dateOfBirth' => '1997-10-31', 'positionID' => $positions->where('name', 'Forward')->first()->positionID],
-            ['name' => 'Andre Onana', 'dateOfBirth' => '1996-04-02', 'positionID' => $positions->where('name', 'Goalkeeper')->first()->positionID],
-            ['name' => 'Lisandro Martinez', 'dateOfBirth' => '1998-01-18', 'positionID' => $positions->where('name', 'Defender')->first()->positionID],
-            ['name' => 'Kobbie Mainoo', 'dateOfBirth' => '2005-04-19', 'positionID' => $positions->where('name', 'Midfielder')->first()->positionID],
+            ['name' => 'Bruno Fernandes', 'birthDate' => '1994-09-08', 'position' => 'MIDFIELDER', 'nationality' => 'Portugal', 'image' => 'fernandes.jpg'],
+            ['name' => 'Marcus Rashford', 'birthDate' => '1997-10-31', 'position' => 'FORWARD', 'nationality' => 'England', 'image' => 'rashford.jpg'],
+            ['name' => 'Andre Onana', 'birthDate' => '1996-04-02', 'position' => 'GOALKEEPER', 'nationality' => 'Cameroon', 'image' => 'onana.jpg'],
+            ['name' => 'Lisandro Martinez', 'birthDate' => '1998-01-18', 'position' => 'DEFENDER', 'nationality' => 'Argentina', 'image' => 'martinez.jpg'],
+            ['name' => 'Kobbie Mainoo', 'birthDate' => '2005-04-19', 'position' => 'MIDFIELDER', 'nationality' => 'England', 'image' => 'mainoo.jpg'],
             // Chelsea
-            ['name' => 'Cole Palmer', 'dateOfBirth' => '2002-05-06', 'positionID' => $positions->where('name', 'Midfielder')->first()->positionID],
-            ['name' => 'Nicolas Jackson', 'dateOfBirth' => '2001-06-20', 'positionID' => $positions->where('name', 'Forward')->first()->positionID],
-            ['name' => 'Robert Sanchez', 'dateOfBirth' => '1997-11-18', 'positionID' => $positions->where('name', 'Goalkeeper')->first()->positionID],
-            ['name' => 'Levi Colwill', 'dateOfBirth' => '2003-02-26', 'positionID' => $positions->where('name', 'Defender')->first()->positionID],
-            ['name' => 'Enzo Fernandez', 'dateOfBirth' => '2001-01-17', 'positionID' => $positions->where('name', 'Midfielder')->first()->positionID],
+            ['name' => 'Cole Palmer', 'birthDate' => '2002-05-06', 'position' => 'MIDFIELDER', 'nationality' => 'England', 'image' => 'palmer.jpg'],
+            ['name' => 'Nicolas Jackson', 'birthDate' => '2001-06-20', 'position' => 'FORWARD', 'nationality' => 'Senegal', 'image' => 'jackson.jpg'],
+            ['name' => 'Robert Sanchez', 'birthDate' => '1997-11-18', 'position' => 'GOALKEEPER', 'nationality' => 'Spain', 'image' => 'sanchez.jpg'],
+            ['name' => 'Levi Colwill', 'birthDate' => '2003-02-26', 'position' => 'DEFENDER', 'nationality' => 'England', 'image' => 'colwill.jpg'],
+            ['name' => 'Enzo Fernandez', 'birthDate' => '2001-01-17', 'position' => 'MIDFIELDER', 'nationality' => 'Argentina', 'image' => 'fernandez.jpg'],
             // Liverpool
-            ['name' => 'Mohamed Salah', 'dateOfBirth' => '1992-06-15', 'positionID' => $positions->where('name', 'Forward')->first()->positionID],
-            ['name' => 'Virgil van Dijk', 'dateOfBirth' => '1991-07-08', 'positionID' => $positions->where('name', 'Defender')->first()->positionID],
-            ['name' => 'Alisson Becker', 'dateOfBirth' => '1992-10-02', 'positionID' => $positions->where('name', 'Goalkeeper')->first()->positionID],
-            ['name' => 'Trent Alexander-Arnold', 'dateOfBirth' => '1998-10-07', 'positionID' => $positions->where('name', 'Defender')->first()->positionID],
-            ['name' => 'Dominik Szoboszlai', 'dateOfBirth' => '2000-10-25', 'positionID' => $positions->where('name', 'Midfielder')->first()->positionID],
+            ['name' => 'Mohamed Salah', 'birthDate' => '1992-06-15', 'position' => 'FORWARD', 'nationality' => 'Egypt', 'image' => 'salah.jpg'],
+            ['name' => 'Virgil van Dijk', 'birthDate' => '1991-07-08', 'position' => 'DEFENDER', 'nationality' => 'Netherlands', 'image' => 'vandijk.jpg'],
+            ['name' => 'Alisson Becker', 'birthDate' => '1992-10-02', 'position' => 'GOALKEEPER', 'nationality' => 'Brazil', 'image' => 'alisson.jpg'],
+            ['name' => 'Trent Alexander-Arnold', 'birthDate' => '1998-10-07', 'position' => 'DEFENDER', 'nationality' => 'England', 'image' => 'trent.jpg'],
+            ['name' => 'Dominik Szoboszlai', 'birthDate' => '2000-10-25', 'position' => 'MIDFIELDER', 'nationality' => 'Hungary', 'image' => 'szoboszlai.jpg'],
             // Manchester City
-            ['name' => 'Erling Haaland', 'dateOfBirth' => '2000-07-21', 'positionID' => $positions->where('name', 'Forward')->first()->positionID],
-            ['name' => 'Kevin De Bruyne', 'dateOfBirth' => '1991-06-28', 'positionID' => $positions->where('name', 'Midfielder')->first()->positionID],
-            ['name' => 'Ederson Moraes', 'dateOfBirth' => '1993-08-17', 'positionID' => $positions->where('name', 'Goalkeeper')->first()->positionID],
-            ['name' => 'Ruben Dias', 'dateOfBirth' => '1997-05-14', 'positionID' => $positions->where('name', 'Defender')->first()->positionID],
-            ['name' => 'Phil Foden', 'dateOfBirth' => '2000-05-28', 'positionID' => $positions->where('name', 'Midfielder')->first()->positionID],
+            ['name' => 'Erling Haaland', 'birthDate' => '2000-07-21', 'position' => 'FORWARD', 'nationality' => 'Norway', 'image' => 'haaland.jpg'],
+            ['name' => 'Kevin De Bruyne', 'birthDate' => '1991-06-28', 'position' => 'MIDFIELDER', 'nationality' => 'Belgium', 'image' => 'debruyne.jpg'],
+            ['name' => 'Ederson Moraes', 'birthDate' => '1993-08-17', 'position' => 'GOALKEEPER', 'nationality' => 'Brazil', 'image' => 'ederson.jpg'],
+            ['name' => 'Ruben Dias', 'birthDate' => '1997-05-14', 'position' => 'DEFENDER', 'nationality' => 'Portugal', 'image' => 'dias.jpg'],
+            ['name' => 'Phil Foden', 'birthDate' => '2000-05-28', 'position' => 'MIDFIELDER', 'nationality' => 'England', 'image' => 'foden.jpg'],
         ];
 
         foreach ($teams as $team) {
-            // Mỗi đội có 20 cầu thủ
             for ($i = 0; $i < 20; $i++) {
                 $playerData = $i < count($playersData) ? $playersData[$i] : [
                     'name' => fake()->name(),
-                    'dateOfBirth' => fake()->dateTimeBetween('-30 years', '-18 years'),
-                    'positionID' => fake()->randomElement($positions->pluck('positionID')->toArray()),
+                    'birthDate' => fake()->dateTimeBetween('-30 years', '-18 years')->format('Y-m-d'),
+                    'position' => fake()->randomElement($positions),
+                    'nationality' => fake()->country(),
+                    'image' => null,
                 ];
                 Player::create(array_merge($playerData, [
                     'playerID' => fake()->uuid(),

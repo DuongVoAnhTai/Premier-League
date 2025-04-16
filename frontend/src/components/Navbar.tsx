@@ -1,77 +1,56 @@
-// "use client";
+"use client";
 
+import { getTournamentsNav } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image"
 
-// import { useAuthContext } from "@/context/AuthContext";
-// import Link from "next/link";
-// import { useRouter } from "next/navigation";
-
-// const Navbar: React.FC = () => {
-//   const { isAuthenticated, logout } = useAuthContext();
-//   const router = useRouter();
-
-//   const handleLogout = () => {
-//     logout();
-//     router.push("/");
-//   };
-
-//   return (
-//     <nav className="bg-blue-600 p-4 text-white">
-//       <div className="container mx-auto flex justify-between items-center">
-//         <Link href="/" className="text-2xl font-bold">
-//           Football Championship
-//         </Link>
-//         <div className="space-x-4">
-//           <Link href="/tournaments" className="hover:underline">
-//             Tournaments
-//           </Link>
-//           <Link href="/teams" className="hover:underline">
-//             Teams
-//           </Link>
-//           <Link href="/players" className="hover:underline">
-//             Players
-//           </Link>
-//           <Link href="/schedules" className="hover:underline">
-//             Schedules
-//           </Link>
-//           <Link href="/matches" className="hover:underline">
-//             Matches
-//           </Link>
-//           <Link href="/rankings" className="hover:underline">
-//             Rankings
-//           </Link>
-//           {isAuthenticated && (
-//             <>
-//               <Link href="/admin" className="hover:underline">
-//                 Admin Dashboard
-//               </Link>
-//               <button onClick={handleLogout} className="hover:underline">
-//                 Logout
-//               </button>
-//             </>
-//           )}
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
-
-
 export default function Navbar () {
+  const {
+    data: tournaments = [],
+    isLoading: tournamentsLoading,
+    error: tournamentsError,
+  } = useQuery({
+    queryKey: ["tournaments"],
+    queryFn: getTournamentsNav,
+  });
+  const currentTournament = tournaments.find((t: any) => t.isCurrent) || tournaments[0];
   return (
-    <div className="flex items-center justify-between p-4">
-      {/* SEARCH BAR */}
-      <div className="hidden md:flex">
-        <label htmlFor="">Admin</label>
+    <div className="flex items-center justify-between p-4 bg-gray-100 rounded-xl">
+      {/* DROPDOWN */}
+      <div className="hidden md:flex flex items-center gap-2">
+        {tournamentsLoading ? (
+          <span>Loading...</span>
+        ) : tournamentsError ? (
+          <span>Error loading tournaments</span>
+        ) : (
+          <select 
+            className="bg-blue-100 text-blue-800 font-semibold rounded p-2"
+            value={currentTournament?.id || ""}
+            onChange={(e) => {
+              const selectedTournament = tournaments.find((t: any) => t.id === e.target.value);
+              console.log("Selected tournament:", selectedTournament);
+            }}
+          >
+            {tournaments.map((tournament: any) => (
+              <option key={tournament.id} value={tournament.id}>
+                {tournament.name} {tournament.isCurrent ? "(current)" : ""}
+              </option>
+            ))}
+          </select>
+
+        )}
+        {tournaments.map((tournament: any) => (
+          <h1 className="bg-blue-100 text-blue-800 font-semibold rounded p-2" key={tournament.id}>
+            {tournament.status}
+          </h1>
+        ))}
       </div>
       {/* ICONS AND USERS */}
-      <div className="flex items-center gap-6 justify-end w-full">
+      <div className="flex items-center gap-2 justify-end w-full">
         <div className="flex cursor-pointer">
-          <span className="text-xs leading-3 font-medium">Admin</span>
+          <span className="text-[16px] leading-3 font-medium">Admin</span>
         </div>
-        <Image src="/avatar.png" alt="" width={20} height={20}/>
+        <Image src="/avatar.png" alt="" width={35} height={35} className="cursor-pointer"/>
       </div>
     </div>
   )

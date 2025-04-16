@@ -2,30 +2,14 @@
 
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const data = [
-  {
-    name: 'Under 20',
-    total: 300,
-  },
-  {
-    name: '20-25',
-    total: 200,
-  },
-  {
-    name: '26-30',
-    total: 100,
-  },
-  {
-    name: '31-35',
-    total: 270,
-  },
-  {
-    name: 'Over 35',
-    total: 160,
-  },
-];
+const legendFormatter = (value: string) => {
+  if (value === "total") {
+    return "Player By Age Group";
+  }
+  return value;
+};
 
-export default function BarChartComponent() {
+export default function BarChartComponent({data}: {data: any[]}) {
   return (
     <div className='bg-gray-100 rounded-xl w-full h-full p-4'>
         {/* TITLE */}
@@ -37,7 +21,7 @@ export default function BarChartComponent() {
             <BarChart
               width={500}
               height={300}
-              data={data}
+              data={data.length > 0 ? data : [{ name: "Loading...", total: 0 }]}
               margin={{
                   top: 5,
                   right: 30,
@@ -56,6 +40,7 @@ export default function BarChartComponent() {
                   verticalAlign="top"
                   iconType="square"
                   wrapperStyle={{ fontSize: "20px", paddingTop: "20px", paddingBottom: "30px"}}
+                  formatter={legendFormatter}
                 />
             </BarChart>
       </ResponsiveContainer>

@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->string('playerID')->primary();
             $table->string('name');
-            $table->date('dateOfBirth')->nullable();
+            $table->enum('position', ['GOALKEEPER', 'DEFENDER', 'MIDFIELDER', 'FORWARD']);
+            $table->date('birthDate');
+            $table->string('nationality');
+            $table->string('image')->nullable();
             $table->string('teamID');
-            $table->string('positionID');
             $table->foreign('teamID')->references('teamID')->on('teams')->onDelete('cascade');
-            $table->foreign('positionID')->references('positionID')->on('positions')->onDelete('cascade');
             $table->timestamps();
         });
     }

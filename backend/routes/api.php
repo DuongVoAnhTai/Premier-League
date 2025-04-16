@@ -1,45 +1,76 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GoalController;
+use App\Http\Controllers\MatchController;
+use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\StandingController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TournamentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
-
-Route::middleware('auth:api')->group(function() {
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
-
-    // //Admin routes
-    // Route::prefix('admin')->group(function () {
-    //     Route::apiResource('tournaments', TournamentController::class);
-    //     Route::post('tournaments/{tournamentID}/teams', [TournamentController::class, 'addTeam']);
-    //     Route::post('tournaments/{tournamentID}/generate-schedule', [TournamentController::class, 'generateSchedule']);
-    //     Route::post('tournaments/{tournamentID}/update-ranking', [TournamentController::class, 'updateRanking']);
-    //     Route::post('schedules/{scheduleID}/approve', [AdminScheduleController::class, 'approveSchedule']);
-    //     Route::post('schedules/{scheduleID}/matches', [AdminMatchController::class, 'addMatch']);
-    //     Route::post('matches/{matchID}/result', [ResultController::class, 'saveResult']);
-    // });
-   
-    // // Coach Routes
-    // Route::prefix('coach')->group(function () {
-    //     Route::get('tournaments/{tournamentID}/schedules', [CoachScheduleController::class, 'index']);
-    //     Route::get('schedules/{scheduleID}/matches', [CoachMatchController::class, 'index']);
-    //     Route::get('tournaments/{tournamentID}/rankings', [CoachRankingController::class, 'index']);
-    // });
-
-    // Admin-only routes
-    Route::middleware('role:admin')->group(function () {
+    
+    Route::prefix('dashboard')->group(function () {
+        Route::get('/tournaments', [DashboardController::class, 'getTournaments']);
+        Route::get('/user-cards', [DashboardController::class, 'getUserCardData']);
+        Route::get('/team-distribution', [DashboardController::class, 'getTeamDistribution']);
+        Route::get('/player-age-distribution', [DashboardController::class, 'getPlayerAgeDistribution']);
+    });
+    
+    Route::prefix('tournament')->group(function () {
+        Route::get('/tournaments', [TournamentController::class, 'index']);
         Route::post('/tournaments', [TournamentController::class, 'store']);
         Route::put('/tournaments/{id}', [TournamentController::class, 'update']);
         Route::delete('/tournaments/{id}', [TournamentController::class, 'destroy']);
-        Route::post('/teams', [TeamController::class, 'store']);
     });
-
-    // Public routes
-    Route::get('/tournaments', [TournamentController::class, 'index']);
-    Route::get('/tournaments/{id}', [TournamentController::class, 'show']);
-    Route::get('/teams', [TeamController::class, 'index']);
-    Route::get('/teams/{id}', [TeamController::class, 'show']);
+    
+    Route::prefix('team')->group(function () {
+        Route::get('/teams', [TeamController::class, 'index']);
+        Route::post('/teams', [TeamController::class, 'store']);
+        Route::put('/teams/{id}', [TeamController::class, 'update']);
+        Route::delete('/teams/{id}', [TeamController::class, 'destroy']);
+    });
+    
+    Route::prefix('player')->group(function () {
+        Route::get('/teams', [TeamController::class, 'getTeams']);
+        Route::get('/players', [PlayerController::class, 'index']);
+        Route::post('/players', [PlayerController::class, 'store']);
+        Route::put('/players/{id}', [PlayerController::class, 'update']);
+        Route::delete('/players/{id}', [PlayerController::class, 'destroy']);
+    });
+    
+    Route::prefix('match')->group(function () {
+        Route::get('/schedules', [ScheduleController::class, 'index']);
+        Route::get('/matches', [MatchController::class, 'index']);
+        Route::post('/matches', [MatchController::class, 'store']);
+        Route::put('/matches/{id}', [MatchController::class, 'update']);
+        Route::delete('/matches/{id}', [MatchController::class, 'destroy']);
+    });
+    
+    Route::prefix('goal')->group(function () {
+        Route::get('/goals', [GoalController::class, 'index']);
+        Route::post('/goals', [GoalController::class, 'store']);
+        Route::put('/goals/{id}', [GoalController::class, 'update']);
+        Route::delete('/goals/{id}', [GoalController::class, 'destroy']);
+    });
+    
+    Route::prefix('standing')->group(function () {
+        Route::get('/standings', [StandingController::class, 'index']);
+        Route::post('/standings', [StandingController::class, 'store']);
+        Route::put('/standings/{id}', [StandingController::class, 'update']);
+        Route::delete('/standings/{id}', [StandingController::class, 'destroy']);
+    });
+    
+    Route::prefix('user')->group(function () {
+        Route::get('/users', [UserController::class, 'index']);
+        Route::post('/users', [UserController::class, 'store']);
+        Route::put('/users/{id}', [UserController::class, 'update']);
+        Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    });
 });

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Tournament;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-
 class TournamentSeeder extends Seeder
 {
     /**
@@ -16,9 +15,9 @@ class TournamentSeeder extends Seeder
         Tournament::create([
             'tournamentID' => 'tournament1',
             'name' => 'National Championship 2025',
-            'startDate' => '2025-05-01',
-            'endDate' => '2025-06-01',
-            'status' => 'ongoing'
+            'startDate' => '2025-04-01',
+            'endDate' => '2025-06-1',
+            'status' => 'upcoming'
         ]);
     }
 }

@@ -22,12 +22,12 @@ class StoreTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'teamID' => 'required|string|unique:teams',
-            'name' => 'required|string',
-            'coach' => 'required|string',
-            'points' => 'integer|default:0',
-            'logo' => 'nullable|string',
-            'tournamentID' => 'required|string|exists:tournaments,tournamentID',
+            'name' => 'required|string|max:255',
+            'coach' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'logo' => 'nullable|string|max:255',
+            'tournamentID' => 'required|exists:tournaments,tournamentID',
         ];
     }
 }

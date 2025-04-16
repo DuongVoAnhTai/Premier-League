@@ -24,9 +24,11 @@ class PlayerFactory extends Factory
         return [
             'playerID' => fake()->uuid(),
             'name' => fake()->randomElement($firstNames) . ' ' . fake()->randomElement($lastNames),
-            'dateOfBirth' => fake()->dateTimeBetween('-30 years', '-18 years'),
-            'teamId' => Team::factory(),
-            'positionId' => Position::factory(),
+            'position' => fake()->randomElement(['GOALKEEPER', 'DEFENDER', 'MIDFIELDER', 'FORWARD']),
+            'birthDate' => fake()->dateTimeBetween('-30 years', '-18 years'),
+            'nationality' => fake()->country(),
+            'image' => fake()->imageUrl(),
+            'teamID' => Team::factory(),
         ];
     }
 }

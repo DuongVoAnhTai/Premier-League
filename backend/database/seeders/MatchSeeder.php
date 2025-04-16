@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\MatchModel;
-use App\Models\Schedule;
 use App\Models\Team;
+use App\Models\Tournament;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,20 +15,25 @@ class MatchSeeder extends Seeder
      */
     public function run(): void
     {
-        $schedules = Schedule::all();
+        $tournaments = Tournament::all();
         $teams = Team::all()->pluck('teamID')->toArray();
 
-        foreach ($schedules as $schedule) {
-            for ($i = 0; $i < 2; $i++) { // Mỗi lịch có 2 trận
-                $team1 = fake()->randomElement($teams);
-                $team2 = fake()->randomElement(array_diff($teams, [$team1])); // Đội 2 khác đội 1
+        foreach ($tournaments as $tournament) {
+            // Create 5 matches per tournament
+            for ($i = 0; $i < 5; $i++) {
+                $homeTeamID = fake()->randomElement($teams);
+                $awayTeamID = fake()->randomElement(array_diff($teams, [$homeTeamID]));
 
                 MatchModel::create([
                     'matchID' => fake()->uuid(),
-                    'scheduleID' => $schedule->scheduleID,
-                    'team1ID' => $team1,
-                    'team2ID' => $team2,
                     'matchDate' => fake()->dateTimeBetween('2025-01-01', '2025-12-31'),
+                    'time' => fake()->time('H:i'),
+                    'status' => fake()->randomElement(['LIVE', 'FINISHED', 'CANCELLED']),
+                    'homeScore' => fake()->numberBetween(0, 5),
+                    'awayScore' => fake()->numberBetween(0, 5),
+                    'tournamentID' => $tournament->tournamentID,
+                    'homeTeamID' => $homeTeamID,
+                    'awayTeamID' => $awayTeamID,
                 ]);
             }
         }

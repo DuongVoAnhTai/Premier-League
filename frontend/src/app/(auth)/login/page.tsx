@@ -1,46 +1,82 @@
-'use client'
+"use client";
 
-import Button from "@/components/Button";
-import { useAuth } from "@/hooks/useAuth";
+import { login } from "@/lib/api";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-
-interface FormData {
-    email: string;
-    password: string;
-}
+import { useState } from "react";
 
 export default function LoginPage() {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-    const { login } = useAuth();
-    const router = useRouter();
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState<string | null>(null);
 
-    const onSubmit = async (data: FormData) => {
-        try {
-            await login(data.email, data.password);
-            router.push('/');
-        } 
-        catch (error) {
-            console.error(error);
-        }
-    };
+  const loginMutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      // Giả sử backend trả về token, lưu vào localStorage
+      localStorage.setItem("authToken", data.token);
+      // Chuyển hướng đến trang admin sau khi đăng nhập thành công
+      router.push("/admin/dashboard");
+    },
+    onError: (error: any) => {
+      setError(error.message || "Invalid email or password");
+    },
+  });
 
-    return (
-        <div className="max-w-md mx-auto mt-10">
-            <h1 className="text-2xl font-bold mb-4">Login</h1>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <div>
-                    <label className="block">Email</label>
-                    <input type="email" {...register('email', { required: 'Email is required' })} className="border p-2 w-full"/>
-                    {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-                </div>
-                <div>
-                    <label className="block">Password</label>
-                    <input type="password" {...register('password', { required: 'Password is required' })} className="border p-2 w-full"/>
-                    {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-                </div>
-                <Button className="w-full">Login</Button>
-            </form>
-        </div>
-    );
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null); // Reset lỗi trước khi gửi
+    loginMutation.mutate(formData);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-semibold text-center mb-6">Admin Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">
+              <span className="text-red-500">*</span> Email
+            </label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full border border-gray-300 rounded p-2"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-sm font-medium mb-1">
+              <span className="text-red-500">*</span> Password
+            </label>
+            <input
+              type="password"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="w-full border border-gray-300 rounded p-2"
+              placeholder="Password"
+              required
+            />
+          </div>
+          {error && (
+            <div className="mb-4 text-red-500 text-sm text-center">
+              {error}
+            </div>
+          )}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+            disabled={loginMutation.isPending}
+          >
+            {loginMutation.isPending ? "Logging in..." : "Login"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }

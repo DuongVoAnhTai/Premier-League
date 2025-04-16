@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('matches', function (Blueprint $table) {
             $table->string('matchID')->primary();
-            $table->string('team1ID');
-            $table->string('team2ID');
             $table->date('matchDate');
-            $table->string('status');
-            $table->string('scheduleID');
-            $table->foreign('team1ID')->references('teamID')->on('teams')->onDelete('cascade');
-            $table->foreign('team2ID')->references('teamID')->on('teams')->onDelete('cascade');
-            $table->foreign('scheduleID')->references('scheduleID')->on('schedules')->onDelete('cascade');
+            $table->string('time');
+            $table->enum('status', ['LIVE', 'FINISHED', 'CANCELLED']);
+            $table->integer('homeScore')->default(0);
+            $table->integer('awayScore')->default(0);
+            $table->string('tournamentID');
+            $table->string('homeTeamID');
+            $table->string('awayTeamID');
+            $table->foreign('tournamentID')->references('tournamentID')->on('tournaments')->onDelete('cascade');
+            $table->foreign('homeTeamID')->references('teamID')->on('teams')->onDelete('cascade');
+            $table->foreign('awayTeamID')->references('teamID')->on('teams')->onDelete('cascade');
             $table->timestamps();
         });
     }

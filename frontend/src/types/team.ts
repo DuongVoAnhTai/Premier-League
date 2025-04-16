@@ -1,8 +1,12 @@
+import { Tournament } from "./tournament";
+
 export interface Team {
-    teamID: string;
-    name: string;
-    coach: string;
-    points: number;
-    logo?: string;
-    tournamentID: string;
+  teamID: string;
+  name: string;
+  coach: string;
+  city: string;
+  country: string;
+  logo: string | null;
+  tournamentID: string;
+  tournament: Tournament;
 }

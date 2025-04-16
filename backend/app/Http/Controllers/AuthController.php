@@ -35,30 +35,38 @@ class AuthController extends Controller
     }
 
     public function login(Request $request) {
+        // Validate dữ liệu đầu vào
         $request->validate([
-            'username' => 'required|string|',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        if (!Auth::attempt($request->only('username', 'password'))) {
+        // Tìm user theo email
+        $user = User::where('email', $request->email)->first();
+
+        // Kiểm tra user tồn tại và mật khẩu đúng
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
-                'message' => 'Invalid credentials'
+                'message' => 'Invalid email or password',
             ], 401);
         }
 
-        $user = Auth::user();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        // Tạo token (dùng Laravel Sanctum)
+        $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
             'token' => $token,
-        ]);
+            'user' => $user,
+        ], 200);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
+        // Xóa token hiện tại của user
         $request->user()->currentAccessToken()->delete();
+
         return response()->json([
-            'message' => 'Logged out successfully'
-        ]);
+            'message' => 'Logged out successfully',
+        ], 200);
     }
 }

@@ -15,23 +15,59 @@ class TeamSeeder extends Seeder
      */
     public function run(): void
     {
-        $tournament = Tournament::first();
-        $teamsData = [
-            ['teamID' => 'team1', 'name' => 'Arsenal', 'coach' => 'Mikel Arteta', 'points' => 0, 'logo' => 'arsenal.png'],
-            ['teamID' => 'team2', 'name' => 'Manchester United', 'coach' => 'Erik ten Hag', 'points' => 0, 'logo' => 'mu.png'],
-            ['teamID' => 'team3', 'name' => 'Chelsea', 'coach' => 'Enzo Maresca', 'points' => 0, 'logo' => 'chelsea.png'],
-            ['teamID' => 'team4', 'name' => 'Liverpool', 'coach' => 'Arne Slot', 'points' => 0, 'logo' => 'liverpool.png'],
-            ['teamID' => 'team5', 'name' => 'Manchester City', 'coach' => 'Pep Guardiola', 'points' => 0, 'logo' => 'mancity.png'],
-            ['teamID' => 'team6', 'name' => 'Tottenham', 'coach' => 'Ange Postecoglou', 'points' => 0, 'logo' => 'tottenham.png'],
-            ['teamID' => 'team7', 'name' => 'Leicester City', 'coach' => 'Steve Cooper', 'points' => 0, 'logo' => 'leicester.png'],
-            ['teamID' => 'team8', 'name' => 'Everton', 'coach' => 'Sean Dyche', 'points' => 0, 'logo' => 'everton.png'],
-            ['teamID' => 'team9', 'name' => 'West Ham', 'coach' => 'Julen Lopetegui', 'points' => 0, 'logo' => 'westham.png'],
-            ['teamID' => 'team10', 'name' => 'Aston Villa', 'coach' => 'Unai Emery', 'points' => 0, 'logo' => 'astonvilla.png'],
+        $tournaments = Tournament::all();
+        $tournamentID = $tournaments->first()->tournamentID;
+
+        $teams = [
+            [
+                'teamID' => fake()->uuid(),
+                'name' => 'Arsenal',
+                'coach' => 'Mikel Arteta',
+                'city' => 'London',
+                'country' => 'England',
+                'logo' => 'arsenal.png',
+                'tournamentID' => $tournamentID,
+            ],
+            [
+                'teamID' => fake()->uuid(),
+                'name' => 'Manchester United',
+                'coach' => 'Erik ten Hag',
+                'city' => 'Manchester',
+                'country' => 'England',
+                'logo' => 'manutd.png',
+                'tournamentID' => $tournamentID,
+            ],
+            [
+                'teamID' => fake()->uuid(),
+                'name' => 'Chelsea',
+                'coach' => 'Enzo Maresca',
+                'city' => 'London',
+                'country' => 'England',
+                'logo' => 'chelsea.png',
+                'tournamentID' => $tournamentID,
+            ],
+            [
+                'teamID' => fake()->uuid(),
+                'name' => 'Liverpool',
+                'coach' => 'Arne Slot',
+                'city' => 'Liverpool',
+                'country' => 'England',
+                'logo' => 'liverpool.png',
+                'tournamentID' => $tournamentID,
+            ],
+            [
+                'teamID' => fake()->uuid(),
+                'name' => 'Manchester City',
+                'coach' => 'Pep Guardiola',
+                'city' => 'Manchester',
+                'country' => 'England',
+                'logo' => 'mancity.png',
+                'tournamentID' => $tournamentID,
+            ],
         ];
 
-        foreach ($teamsData as $teamData) {
-            $team = Team::create($teamData);
-            // $tournament->teams()->attach($team->teamID);
+        foreach ($teams as $team) {
+            Team::create($team);
         }
     }
 }
