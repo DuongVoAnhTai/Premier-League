@@ -16,9 +16,7 @@ export default function LoginPage() {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      // Giả sử backend trả về token, lưu vào localStorage
-      localStorage.setItem("authToken", data.token);
-      // Chuyển hướng đến trang admin sau khi đăng nhập thành công
+      document.cookie = `authToken=${data.token}; path=/; max-age=86400`; // Hết hạn sau 1 ngày
       router.push("/admin/dashboard");
     },
     onError: (error: any) => {

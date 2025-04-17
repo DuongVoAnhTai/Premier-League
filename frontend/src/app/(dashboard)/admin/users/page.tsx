@@ -1,9 +1,7 @@
 "use client";
 
-import TournamentTable from "@/components/TournamentTable";
 import UserTable from "@/components/UserTable";
 import { getUsers } from "@/lib/api";
-import { Tournament } from "@/types/tournament";
 import { User } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -37,8 +35,8 @@ export default function TournamentsPage() {
       {/* Bảng danh sách giải đấu */}
       <UserTable
         users={users}
-        onEdit={(user: User) => router.push(`/admin/users/edit/${user.userID}`)}
-        onDelete={(id: string) => router.push(`/admin/users/delete/${id}`)}
+        onEdit={(user: User) => router.push(`/admin/users/edit/${user.id}`)}
+        onDelete={(id: number) => router.push(`/admin/users/delete/${id}`)}
       />
     </div>
   );

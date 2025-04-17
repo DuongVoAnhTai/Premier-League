@@ -25,9 +25,8 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $user = User::create([
-            'userID' => Str::uuid(),
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make('1'),
             'name' => $request->name,
             'role' => $request->role,
         ]);
@@ -58,6 +57,23 @@ class UserController extends Controller
         ]);
 
         return response()->json($user, 200);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'password' => 'nullable|string',
+        ]);
+
+        $user = $request->user();
+        $user->name = $request->name;
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+        $user->save();
+
+        return response()->json(['message' => 'Profile updated successfully'], 200);
     }
 
     /**

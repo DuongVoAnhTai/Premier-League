@@ -5,7 +5,7 @@ import { User } from "@/types/user";
 interface GoalTableProps {
   users: User[];
   onEdit: (user: User) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: number) => void;
 }
 
 export default function UserTable({ users, onEdit, onDelete }: GoalTableProps) {
@@ -23,7 +23,7 @@ export default function UserTable({ users, onEdit, onDelete }: GoalTableProps) {
         </thead>
         <tbody>
             {users.map((user) => (
-              <tr key={user.userID}>
+              <tr key={user.id}>
               {/* <td className="border border-gray-300 px-4 py-2">{result.resultID}</td> */}
               <td className="border border-gray-300 p-2">{user.name}</td>
               <td className="border border-gray-300 p-2">{user.email}</td>
@@ -32,7 +32,7 @@ export default function UserTable({ users, onEdit, onDelete }: GoalTableProps) {
                 <button onClick={() => onEdit(user)} className="text-blue-600 mr-2">
                   ✏️
                 </button>
-                <button onClick={() => onDelete(user.userID)} className="text-red-600">
+                <button onClick={() => onDelete(user.id)} className="text-red-600">
                   🗑️
                 </button>
               </td>

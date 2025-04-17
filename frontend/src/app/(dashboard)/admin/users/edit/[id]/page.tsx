@@ -1,6 +1,6 @@
 "use client";
 
-import {  getUsers, updateUser } from "@/lib/api";
+import { getUsers, updateUser } from "@/lib/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,7 +15,6 @@ export default function EditUserPage() {
     role: "ADMIN",
   });
 
-  // Lấy dữ liệu user
   const { data: users = [], isLoading: usersLoading, error: usersError } = useQuery({
     queryKey: ["allUsers"],
     queryFn: getUsers,
@@ -23,7 +22,7 @@ export default function EditUserPage() {
 
   useEffect(() => {
     if (users.length > 0) {
-      const user = users.find((u: any) => u.userID === id);
+      const user = users.find((u: any) => u.id === Number(id));
       if (user) {
         setFormData({
           email: shapeEmail(user.email),
@@ -35,7 +34,7 @@ export default function EditUserPage() {
   }, [users, id]);
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updateUser(id, data),
+    mutationFn: ({ id, data }: { id: number; data: any }) => updateUser(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allUsers"] });
       router.push("/admin/users");
@@ -48,12 +47,17 @@ export default function EditUserPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateMutation.mutate({ id: id as string, data: formData });
+    const userId = Number(id);
+    if (isNaN(userId)) {
+      // setError("Invalid user ID");
+      return;
+    }
+    updateMutation.mutate({ id: userId, data: formData });
   };
 
   if (usersLoading) return <div>Loading...</div>;
   if (usersError) return <div>Error: {usersError.message}</div>;
-  if (!users.find((u: any) => u.userID === id)) return <div>User not found</div>;
+  if (!users.find((u: any) => u.id === Number(id))) return <div>User not found</div>;
 
   return (
     <div className="p-4">
@@ -114,7 +118,6 @@ export default function EditUserPage() {
   );
 }
 
-// Định dạng lại email để đảm bảo không có khoảng trắng thừa
 const shapeEmail = (email: string) => {
   return email.trim().toLowerCase();
 };

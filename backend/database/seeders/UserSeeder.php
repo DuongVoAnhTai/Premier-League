@@ -15,14 +15,12 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'userID' => fake()->uuid(),
                 'email' => 'admin@example.com',
                 'password' => Hash::make('password'),
                 'name' => 'Admin User',
                 'role' => 'ADMIN',
             ],
             [
-                'userID' => fake()->uuid(),
                 'email' => 'referee@example.com',
                 'password' => Hash::make('password'),
                 'name' => 'Referee User',

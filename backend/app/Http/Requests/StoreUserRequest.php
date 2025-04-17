@@ -22,12 +22,11 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('id');
         return [
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore($userId, 'userID'), // Loại trừ user hiện tại
+                Rule::unique('users', 'email')->ignore($this->route('id'), 'id'),
             ],
             'name' => 'required|string|max:255',
             'role' => 'required|in:ADMIN,REFEREE',

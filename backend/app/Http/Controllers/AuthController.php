@@ -38,7 +38,7 @@ class AuthController extends Controller
         // Validate dữ liệu đầu vào
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string',
+            'password' => 'required',
         ]);
 
         // Tìm user theo email
@@ -62,11 +62,20 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // Xóa token hiện tại của user
-        $request->user()->currentAccessToken()->delete();
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+            return response()->json([
+                'message' => 'Logged out successfully',
+            ], 200);
+        }
 
         return response()->json([
-            'message' => 'Logged out successfully',
-        ], 200);
+            'message' => 'No authenticated user found',
+        ], 401);
+    }
+
+    public function getCurrentUser(Request $request)
+    {
+        return response()->json($request->user());
     }
 }

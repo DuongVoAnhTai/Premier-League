@@ -5,6 +5,9 @@ import Image from "next/image";
 import Menu from "@/components/Menu";
 import Navbar from "@/components/Navbar"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { logout } from "@/lib/api";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -14,6 +17,16 @@ export default function DashboardLayout({
   }: Readonly<{
     children: React.ReactNode;
   }>) {
+    const router = useRouter();
+
+    // Check for auth token
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+          router.push("/admin/login");
+      }
+  }, [router]);
+
     return (
       <QueryClientProvider client={queryClient}>
         <div className="h-screen flex">

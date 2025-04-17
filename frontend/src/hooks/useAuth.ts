@@ -1,53 +1,26 @@
-"use client";
+// middleware.ts
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-import { useState, useEffect } from "react";
-export interface AuthState {
-  isAuthenticated: boolean;
-  token: string | null;
-  login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
+export function middleware(request: NextRequest) {
+  const token = request.cookies.get('authToken')?.value || null; // Hoặc lấy từ localStorage qua client, nhưng cookies an toàn hơn
+  const { pathname } = request.nextUrl;
+
+  // Cho phép truy cập trang login mà không cần kiểm tra token
+  if (pathname === '/login') {
+    return NextResponse.next();
+  }
+
+  // Nếu không có token và cố truy cập các trang khác, chuyển hướng về /login
+  if (!token) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  // Nếu đã có token, cho phép truy cập
+  return NextResponse.next();
 }
 
-const useAuth = (): AuthState => {
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
-
-  const login = async (username: string, password: string) => {
-    try {
-      const response = await fetch("/api/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      const data = await response.json();
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        setToken(data.token);
-      } else {
-        throw new Error("Login failed");
-      }
-    } catch (error) {
-      throw new Error("Error during login");
-    }
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-  };
-
-  return {
-    isAuthenticated: !!token,
-    token,
-    login,
-    logout,
-  };
+// Áp dụng middleware cho các tuyến đường cụ thể
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'], // Áp dụng cho tất cả các tuyến đường trừ API, static files
 };
-
-export default useAuth;

@@ -25,12 +25,27 @@ export const login = async (credentials: { email: string; password: string }) =>
         // Lưu token vào localStorage
         if (token) {
             setToken(token);
+            document.cookie = `authToken=${token}; path=/; max-age=86400`;
         }
 
         return response.data; // Trả về dữ liệu từ server (có thể chứa thông tin user, token, v.v.)
     } catch (error: any) {
         // Xử lý lỗi từ API
         throw new Error(error.response?.data?.message || "Login failed");
+    }
+};
+
+export const register = async (data: { email: string; name: string; password: string; role: string }) => {
+    try {
+        const response = await api.post("/register", {
+            username: data.email, // Map email to username as per AuthController.php
+            displayName: data.name, // Map name to displayName
+            password: data.password,
+            roleID: data.role, // Assuming roleID is the role name (e.g., "USER")
+        });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || "Registration failed");
     }
 };
 
@@ -42,6 +57,16 @@ export const logout = async () => {
     } catch (error: any) {
         throw new Error(error.response?.data?.message || "Logout failed");
     }
+};
+
+export const getCurrentUser = async () => {
+    const response = await api.get('/user/me');
+    return response.data;
+};
+
+export const updateUserProfile = async (data: { name: string; password?: string }) => {
+    const response = await api.put('/user/update-profile', data);
+    return response.data;
 };
 
 export const getTournamentsNav = async () => {
@@ -206,12 +231,12 @@ export const createUser = async (newUser: any) => {
     return response.data;
 };
 
-export const updateUser = async (id: string, data: any) => {
+export const updateUser = async (id: number, data: any) => {
     const response = await api.put(`/user/users/${id}`, data);
     return response.data;
 };
 
-export const deleteUser = async (id: string) => {
+export const deleteUser = async (id: number) => {
     const response = await api.delete(`/user/users/${id}`);
     return response.data;
 };

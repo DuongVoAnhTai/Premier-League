@@ -15,12 +15,12 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            // TournamentSeeder::class,
-            // TeamSeeder::class,
-            // PlayerSeeder::class,
-            // MatchSeeder::class,
-            // GoalSeeder::class,
-            // StandingSeeder::class,
+            TournamentSeeder::class,
+            TeamSeeder::class,
+            PlayerSeeder::class,
+            MatchSeeder::class,
+            GoalSeeder::class,
+            StandingSeeder::class,
         ]);
     }
 }
