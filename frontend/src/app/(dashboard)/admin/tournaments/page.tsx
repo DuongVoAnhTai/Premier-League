@@ -37,6 +37,7 @@ export default function TournamentsPage() {
         tournaments={tournaments}
         onEdit={(tournament: Tournament) => router.push(`/admin/tournaments/edit/${tournament.tournamentID}`)}
         onDelete={(id: string) => router.push(`/admin/tournaments/delete/${id}`)}
+        completion={(id: string) => router.push(`/admin/tournaments/${id}/completion`)}
       />
     </div>
   );

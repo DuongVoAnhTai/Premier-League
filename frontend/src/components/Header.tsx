@@ -1,54 +1,44 @@
 "use client";
 
+import { getAllTeams } from "@/lib/api";
+import { Team } from "@/types/team";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 
-const clubLogos = [
-  "/clubs/arsenal.png",
-  "/clubs/aston-villa.png",
-  "/clubs/bournemouth.png",
-  "/clubs/brentford.png",
-  "/clubs/brighton.png",
-//   "/clubs/chelsea.png",
-//   "/clubs/crystal-palace.png",
-//   "/clubs/everton.png",
-//   "/clubs/fulham.png",
-//   "/clubs/leeds.png",
-//   "/clubs/leicester.png",
-//   "/clubs/liverpool.png",
-//   "/clubs/man-city.png",
-//   "/clubs/man-united.png",
-//   "/clubs/newcastle.png",
-//   "/clubs/norwich.png",
-//   "/clubs/southampton.png",
-//   "/clubs/tottenham.png",
-//   "/clubs/watford.png",
-//   "/clubs/west-ham.png",
-//   "/clubs/wolves.png",
-];
-
 export default function Header() {
+  const { data: teams = [], isLoading } = useQuery<Team[]>({
+    queryKey: ["teams"],
+    queryFn: getAllTeams,
+  });
+
   return (
     <header className="fixed top-0 left-0 w-full z-50">
       {/* Top Bar with Club Logos */}
       <div className="bg-gray-100 py-2 flex justify-center space-x-2 overflow-x-auto">
-        {clubLogos.map((logo, index) => (
-          <Link href="/clubs" key={index}>
-            <Image
-              src={logo}
-              alt={`Club ${index + 1}`}
-              width={30}
-              height={30}
-              className="hover:opacity-80 transition-opacity"
-            />
-          </Link>
-        ))}
+        {isLoading ? (
+          <div className="text-center text-gray-500">Loading teams...</div>
+        ) : teams.length === 0 ? (
+          <div className="text-center text-gray-500">No teams found.</div>
+        ) : (
+          teams.map((team) => (
+            <Link href={`/clubs/${team.teamID}`} key={team.teamID}>
+              <Image
+                src={`/clubs/${team.logo}` || "/default-logo.png"}
+                alt={`${team.name} logo`}
+                width={30}
+                height={30}
+                className="hover:opacity-80 transition-opacity"
+              />
+            </Link>
+          ))
+        )}
       </div>
 
       {/* Main Header */}
       <div className="bg-[#38003C] text-white flex items-center justify-between px-6 py-4 shadow-md">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/home" className="flex items-center space-x-2">
           <Image
             src="/logo.png"
             alt="Premier League Logo"
@@ -99,12 +89,6 @@ export default function Header() {
           </Link>
           <Link href="/standings" className="text-blue-600 hover:underline">
             Standings
-          </Link>
-          <Link href="/news" className="text-blue-600 hover:underline">
-            News
-          </Link>
-          <Link href="/videos" className="text-blue-600 hover:underline">
-            Videos
           </Link>
           <Link href="/clubs" className="text-blue-600 hover:underline">
             Clubs

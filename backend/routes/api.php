@@ -31,6 +31,8 @@ use Illuminate\Support\Facades\Route;
             Route::post('/tournaments', [TournamentController::class, 'store']);
             Route::put('/tournaments/{id}', [TournamentController::class, 'update']);
             Route::delete('/tournaments/{id}', [TournamentController::class, 'destroy']);
+            Route::delete('/tournaments/{id}', [TournamentController::class, 'destroy']);
+            Route::get('/tournaments/{tournamentID}/completion', [TournamentController::class, 'checkTournamentCompletion']);
         });
         
         Route::prefix('team')->group(function () {

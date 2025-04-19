@@ -16,9 +16,6 @@ export default function EditStandingPage() {
     lost: 0,
     goalsFor: 0,
     goalsAgainst: 0,
-    goalDifference: 0,
-    points: 0,
-    form: "",
     teamID: "",
     tournamentID: "",
   });
@@ -50,9 +47,6 @@ export default function EditStandingPage() {
           lost: standing.lost,
           goalsFor: standing.goalsFor,
           goalsAgainst: standing.goalsAgainst,
-          goalDifference: standing.goalDifference,
-          points: standing.points,
-          form: standing.form || "",
           teamID: standing.teamID,
           tournamentID: standing.tournamentID,
         });
@@ -84,8 +78,6 @@ export default function EditStandingPage() {
         lost: Number(formData.lost),
         goalsFor: Number(formData.goalsFor),
         goalsAgainst: Number(formData.goalsAgainst),
-        goalDifference: Number(formData.goalDifference),
-        points: Number(formData.points),
       },
     });
   };
@@ -162,37 +154,6 @@ export default function EditStandingPage() {
             className="w-full border border-gray-300 rounded p-2"
             min="0"
             required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Goal Difference</label>
-          <input
-            type="number"
-            value={formData.goalDifference}
-            onChange={(e) => setFormData({ ...formData, goalDifference: Number(e.target.value) })}
-            className="w-full border border-gray-300 rounded p-2"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Points</label>
-          <input
-            type="number"
-            value={formData.points}
-            onChange={(e) => setFormData({ ...formData, points: Number(e.target.value) })}
-            className="w-full border border-gray-300 rounded p-2"
-            min="0"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Form (optional)</label>
-          <input
-            type="text"
-            value={formData.form}
-            onChange={(e) => setFormData({ ...formData, form: e.target.value })}
-            className="w-full border border-gray-300 rounded p-2"
-            placeholder="e.g., W-D-L"
           />
         </div>
         <div className="mb-4">

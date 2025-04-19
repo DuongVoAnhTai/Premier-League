@@ -1,3 +1,5 @@
+"use client"
+
 import Header from "@/components/Header";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 

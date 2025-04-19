@@ -92,7 +92,7 @@ export default function AddGoalPage() {
             <option value="">Select Match</option>
             {matches.map((match: any) => (
               <option key={match.matchID} value={match.matchID}>
-                {match.matchDate} - {match.homeTeamID} vs {match.awayTeamID}
+                {match.matchDate} - {match.home_team.name} vs {match.away_team.name}
               </option>
             ))}
           </select>

@@ -4,9 +4,10 @@ interface TournamentTableProps {
   tournaments: Tournament[];
   onEdit: (tournament: Tournament) => void;
   onDelete: (id: string) => void;
+  completion: (id: string) => void;
 }
 
-export default function TournamentTable({ tournaments, onEdit, onDelete }: TournamentTableProps) {
+export default function TournamentTable({ tournaments, onEdit, onDelete, completion }: TournamentTableProps) {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border-collapse border border-gray-300">
@@ -30,8 +31,11 @@ export default function TournamentTable({ tournaments, onEdit, onDelete }: Tourn
                 <button onClick={() => onEdit(tournament)} className="text-blue-600 mr-2">
                   ✏️
                 </button>
-                <button onClick={() => onDelete(tournament.tournamentID)} className="text-red-600">
+                <button onClick={() => onDelete(tournament.tournamentID)} className="text-red-600 mr-2">
                   🗑️
+                </button>
+                <button onClick={() => completion(tournament.tournamentID)} className="text-green-600">
+                  🔍
                 </button>
               </td>
             </tr>

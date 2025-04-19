@@ -110,6 +110,11 @@ export const deleteTournament = async (id: string) => {
     return response.data;
 };
 
+export const getTournamentCompletion = async (tournamentID: string) => {
+    const response = await api.get(`/tournament/tournaments/${tournamentID}/completion`);
+    return response.data;
+};
+
 // Admin Team Calls
 export const getAllTeams = async () => {
     const response = await api.get('/team/teams');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Standing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class StandingController extends Controller
@@ -22,6 +23,52 @@ class StandingController extends Controller
      */
     public function store(Request $request)
     {
+        // Validation rules
+        $validator = Validator::make($request->all(), [
+            'played' => 'required|integer|min:0',
+            'won' => 'required|integer|min:0',
+            'draw' => 'required|integer|min:0',
+            'lost' => 'required|integer|min:0',
+            'goalsFor' => 'required|integer|min:0',
+            'goalsAgainst' => 'required|integer|min:0',
+            'teamID' => 'required|exists:teams,teamID',
+            'tournamentID' => 'required|exists:tournaments,tournamentID',
+        ]);
+
+        // Kiểm tra logic played = won + draw + lost
+        $validator->after(function ($validator) use ($request) {
+            $played = $request->input('played');
+            $won = $request->input('won');
+            $draw = $request->input('draw');
+            $lost = $request->input('lost');
+
+            if ($played !== ($won + $draw + $lost)) {
+                $validator->errors()->add('played', 'The number of played matches must equal won + draw + lost.');
+            }
+        });
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        // Tạo chuỗi form tự động (W-D-L)
+        $form = '';
+        $matches = [];
+        for ($i = 0; $i < $request->won; $i++) {
+            $matches[] = 'W';
+        }
+        for ($i = 0; $i < $request->draw; $i++) {
+            $matches[] = 'D';
+        }
+        for ($i = 0; $i < $request->lost; $i++) {
+            $matches[] = 'L';
+        }
+        $form = implode('', $matches);
+
+        // Tính points và goalDifference
+        $points = ($request->won * 3) + ($request->draw * 1);
+        $goalDifference = $request->goalsFor - $request->goalsAgainst;
+
         $standing = Standing::create([
             'standingID' => Str::uuid(),
             'played' => $request->played,
@@ -30,9 +77,9 @@ class StandingController extends Controller
             'lost' => $request->lost,
             'goalsFor' => $request->goalsFor,
             'goalsAgainst' => $request->goalsAgainst,
-            'goalDifference' => $request->goalDifference,
-            'points' => $request->points,
-            'form' => $request->form,
+            'goalDifference' => $goalDifference,
+            'points' => $points,
+            'form' => $form,
             'teamID' => $request->teamID,
             'tournamentID' => $request->tournamentID,
         ]);
@@ -56,6 +103,53 @@ class StandingController extends Controller
     public function update(Request $request, string $id)
     {
         $standing = Standing::findOrFail($id);
+
+        // Validation rules
+        $validator = Validator::make($request->all(), [
+            'played' => 'required|integer|min:0',
+            'won' => 'required|integer|min:0',
+            'draw' => 'required|integer|min:0',
+            'lost' => 'required|integer|min:0',
+            'goalsFor' => 'required|integer|min:0',
+            'goalsAgainst' => 'required|integer|min:0',
+            'teamID' => 'required|exists:teams,teamID',
+            'tournamentID' => 'required|exists:tournaments,tournamentID',
+        ]);
+
+        // Kiểm tra logic played = won + draw + lost
+        $validator->after(function ($validator) use ($request) {
+            $played = $request->input('played');
+            $won = $request->input('won');
+            $draw = $request->input('draw');
+            $lost = $request->input('lost');
+
+            if ($played !== ($won + $draw + $lost)) {
+                $validator->errors()->add('played', 'The number of played matches must equal won + draw + lost.');
+            }
+        });
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        // Tạo chuỗi form tự động (W-D-L)
+        $form = '';
+        $matches = [];
+        for ($i = 0; $i < $request->won; $i++) {
+            $matches[] = 'W';
+        }
+        for ($i = 0; $i < $request->draw; $i++) {
+            $matches[] = 'D';
+        }
+        for ($i = 0; $i < $request->lost; $i++) {
+            $matches[] = 'L';
+        }
+        $form = implode('', $matches);
+
+        // Tính points và goalDifference
+        $points = ($request->won * 3) + ($request->draw * 1);
+        $goalDifference = $request->goalsFor - $request->goalsAgainst;
+
         $standing->update([
             'played' => $request->played,
             'won' => $request->won,
@@ -63,9 +157,9 @@ class StandingController extends Controller
             'lost' => $request->lost,
             'goalsFor' => $request->goalsFor,
             'goalsAgainst' => $request->goalsAgainst,
-            'goalDifference' => $request->goalDifference,
-            'points' => $request->points,
-            'form' => $request->form,
+            'goalDifference' => $goalDifference,
+            'points' => $points,
+            'form' => $form,
             'teamID' => $request->teamID,
             'tournamentID' => $request->tournamentID,
         ]);

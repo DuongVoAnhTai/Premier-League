@@ -4,31 +4,9 @@ import { getAllMatches, getTournaments, getAllTeams } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Link from "next/link";
-
-interface Match {
-  matchID: string;
-  matchDate: string;
-  time: string;
-  status: "LIVE" | "FINISHED" | "CANCELLED";
-  homeScore: number;
-  awayScore: number;
-  tournamentID: string;
-  homeTeamID: string;
-  awayTeamID: string;
-  tournament: { name: string };
-  homeTeam: { name: string; logo: string };
-  awayTeam: { name: string; logo: string };
-}
-
-interface Tournament {
-  tournamentID: string;
-  name: string;
-}
-
-interface Team {
-  teamID: string;
-  name: string;
-}
+import { Tournament } from "@/types/tournament";
+import { Team } from "@/types/team";
+import { Match } from "@/types/match";
 
 export default function FixturesPage() {
   // State for filters
@@ -86,11 +64,11 @@ export default function FixturesPage() {
   };
 
   if (tournamentsLoading || teamsLoading || matchesLoading) {
-    return <div className="text-center py-10">Loading...</div>;
+    return <div className="text-center p-20">Loading...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10">
+    <div className="min-h-screen bg-gray-100 py-20">
       <div className="max-w-5xl mx-auto px-4">
         {/* Filters Section */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
@@ -181,21 +159,21 @@ export default function FixturesPage() {
                   </div>
                   <div className="flex items-center space-x-4 mt-2">
                     <div className="flex items-center space-x-2">
-                      <img
-                        src={match.homeTeam.logo || "/default-logo.png"}
-                        alt={match.homeTeam.name}
+                      {/* <img
+                        src={match.home_team.logo || "/default-logo.png"}
+                        alt={match.home_team.name}
                         className="w-8 h-8"
-                      />
-                      <span>{match.homeTeam.name}</span>
+                      /> */}
+                      <span>{match.home_team.name}</span>
                     </div>
                     <span className="text-gray-500">{match.time}</span>
                     <div className="flex items-center space-x-2">
-                      <img
-                        src={match.awayTeam.logo || "/default-logo.png"}
-                        alt={match.awayTeam.name}
+                      {/* <img
+                        src={match.away_team.logo || "/default-logo.png"}
+                        alt={match.away_team.name}
                         className="w-8 h-8"
-                      />
-                      <span>{match.awayTeam.name}</span>
+                      /> */}
+                      <span>{match.away_team.name}</span>
                     </div>
                   </div>
                 </div>
